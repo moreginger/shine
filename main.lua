@@ -12,6 +12,7 @@ local effect_names = {
 	"separate_chroma",
 	"vignette",
 	"dmg",
+	"pixelate",
 }
 local current, effects
 
@@ -134,6 +135,14 @@ options = {
 		palette = {value = 1, min = 1, max = 7, step = 1, onHit = setval("dmg","palette")},
 		dump = function(o)
 			return ("palette = %s"):format(math.floor(o.palette.value))
+		end
+	},
+	pixelate = {opts = {"pixel_size", "samples", "add_original"},
+		pixel_size = {value = 3, min = 1, max = 40, step = 1, onHit = setval("pixelate","pixel_size")},
+		samples = {value = 5, min = 1, max = 9, step = 1, onHit = setval("pixelate","samples")},
+		add_original = {value = 0, min = 0, max = 1, step = 1, onHit = function(v) effects.pixelate.add_original = v > 0 end},
+		dump = function(o)
+			return ("pixel_size = %s, samples = %d, add_original = %s"):format(math.floor(o.pixel_size.value), math.floor(o.samples.value), o.add_original.value > 0)
 		end
 	},
 }
